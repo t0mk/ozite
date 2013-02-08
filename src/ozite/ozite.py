@@ -26,9 +26,10 @@ DESCRIPTION = (
         "Based on oz template (tdl) and an unatended installation "
         "recipe, this script will generate images and upload them to glance. "
         "It expects the templates in a git repo or in a local dir. "
-        "It is executing oz which in turn executes qemu-kvm => it must be run "
-        "with sudo. If you want to preserve environment variables in the sudo "
-        "process, you must call sudo -E and have SETENV right in sudoers.")
+        "It is executing oz which in turn executes qemu-kvm => image generation" 
+        "must be run with sudo. If you want to preserve environment variables "
+        "in the sudo process, you must call sudo -E and have SETENV right in "
+        "sudoers.")
 
 EXAMPLES = """
 
