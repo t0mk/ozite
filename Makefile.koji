@@ -1,0 +1,19 @@
+SPECFILE = ozite.spec
+FILES = ozite.py
+
+rpmtopdir := $(shell rpm --eval %_topdir)
+rpmbuild  := $(shell [ -x /usr/bin/rpmbuild ] && echo rpmbuild || echo rpm)
+
+PKGNAME=$(shell grep -s '^Name:' $(SPECFILE) | sed -e 's/Name: *//')
+PKGVERSION=$(shell grep -s '^Version:' $(SPECFILE) | sed -e 's/Version: *//')
+PKGID=$(PKGNAME)-$(PKGVERSION)
+TARFILE=$(PKGID).tar.gz
+
+all:
+	mkdir $(PKGID)
+	ls | grep -v -E '$(PKGID)|\.git' | xargs cp -rt $(PKGID)
+	tar cvzf $(TARFILE) $(PKGID)
+	rm -r $(PKGID)
+
+clean:
+	rm $(TARFILE)
