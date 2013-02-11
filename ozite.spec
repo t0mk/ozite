@@ -10,7 +10,7 @@ Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: noarch
 
-Requires: oz,qemu-img,VirtualBox-4.2
+Requires: oz,qemu-img,VirtualBox-4.2,python-glance
 
 %description
 Ozite is a tool for creating images from templates and uploading then to
@@ -34,7 +34,7 @@ CFLAGS="%{optflags}" %{__python} setup.py build
 %{python_sitelib}/*
 
 %post
-ln -s %{python_sitelib}/ozite/ozite.py  /usr/bin/ozite
+ln -s %{python_sitelib}/ozite/ozite.py /usr/bin/ozite
 chmod +x %{python_sitelib}/ozite/ozite.py 
 
 %preun
