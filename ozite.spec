@@ -10,7 +10,7 @@ Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: noarch
 
-Requires: oz,qemu-img,VirtualBox-4.2,python-glance
+Requires: oz,qemu-img,VirtualBox-4.2,python-glance,python-argparse
 
 %description
 Ozite is a tool for creating images from templates and uploading then to
