@@ -1,7 +1,7 @@
 Summary: Tool for image creation and glance upload
 Name: ozite
 Version: 0.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPL
 Group: System Environment/Base
@@ -35,12 +35,14 @@ CFLAGS="%{optflags}" %{__python} setup.py build
 
 %post
 ln -s %{python_sitelib}/ozite/ozite.py /usr/bin/ozite
-chmod +x %{python_sitelib}/ozite/ozite.py 
+chmod +x %{python_sitelib}/ozite/ozite.py
 
 %preun
 rm /usr/bin/ozite
 
 
 %changelog
+* Mon Mar 18 2013 Tomas Karasek <tomas.karasek@cern.ch> - 0.1-2
+- fixed deps and added raw image format for faster debugging of images
 * Fri Feb 08 2013 Tomas Karasek <tomas.karasek@cern.ch> - 0.1-1
 - First release
