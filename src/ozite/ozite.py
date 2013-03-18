@@ -85,7 +85,8 @@ OSS = {
 
 IMAGE_FORMATS = {
     'qcow2': "qemu-img convert -p -c -O qcow2 {0} {1}",
-    'vhd': "VBoxManage convertfromraw {0} {1} --format=VHD"
+    'vhd': "VBoxManage convertfromraw {0} {1} --format=VHD",
+    'rawimg': "mv {0} {1}"
 }
 
 
