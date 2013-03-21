@@ -26,7 +26,7 @@ DESCRIPTION = (
         "Based on oz template (tdl) and an unatended installation "
         "recipe, this script will generate images and upload them to glance. "
         "It expects the templates in a git repo or in a local dir. "
-        "It is executing oz which in turn executes qemu-kvm => image generation" 
+        "It is executing oz which in turn executes qemu-kvm => image generation"
         "must be run with sudo. If you want to preserve environment variables "
         "in the sudo process, you must call sudo -E and have SETENV right in "
         "sudoers.")
@@ -38,14 +38,14 @@ Examples:
   - Create qcow2 image for slc5 from templates in git repo %(repo)s
     (it's the default repo):
         $ sudo -E %(name)s -d -n slc5 -f qcow2
-    image with timestamp in the filename will be created in /tmp 
-  
+    image with timestamp in the filename will be created in /tmp
+
   - Create qcow2 image for slc5 from templates stored in cwd:
     (there must be slc5/slc5.{tdl,ks} in cwd)
         $ sudo %(name)s -d -n slc5 -l -f qcow2
 
   - Create image for slc5 from templates stored in git and upload it to glance
-    with proper properties (-o parameter), with glance name "SLC5 image", to 
+    with proper properties (-o parameter), with glance name "SLC5 image", to
     tenant "tkarasek private" and then remove the generated image from local disk
         $ sudo -E %(name)s -d -n slc5 -p -u -d -o linux -g "SLC5 image" -t "tkarasek private"
 
@@ -61,7 +61,7 @@ Examples:
         $ %(name)s -d -i /tmp/slc5.qcow2 -o linux -f qcow2 -t "tkarasek private"
 
   - Generate vhd image based on templates windows2012/windows2012.{xml,tdl},
-    upload it to glance for tenant "tkarasek private", and delete the image 
+    upload it to glance for tenant "tkarasek private", and delete the image
     file from local disk.
         $ sudo -E %(name)s -d -n windows2012 -o windows -f vhd -u -p -t "tkarasek private"
 """ % {'repo': DEFAULT_REPO, 'name': MYNAME}
@@ -110,7 +110,7 @@ def argparseFile(f):
 
 def getTempDir():
     d = tempfile.mkdtemp(dir=TMPROOT)
-    mask = (stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | 
+    mask = (stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR |
             stat.S_IRGRP | stat.S_IWGRP | stat.S_IXGRP |
             stat.S_IROTH | stat.S_IWOTH | stat.S_IXOTH)
     os.chmod(d,mask)
@@ -139,7 +139,7 @@ def changeToTemplatesDir(name, local, repo):
         callCheck(cmd_str.split())
         os.chdir(os.path.basename(repo))
 
-    template = "{0}/{0}.tdl".format(name) 
+    template = "{0}/{0}.tdl".format(name)
     if not os.path.isfile(template):
         raise ImgGenError("No %s in %s" % (template, os.getcwd()))
 
@@ -149,7 +149,7 @@ def generateImage(name, imgformat):
     img = tempdir + "/%s.raw" % name
     oz_args = " -d 4 -s {0} {1}/{1}.tdl".format(img, name)
     for extension in ['ks', 'xml']:
-        recipe = "{0}/{0}.{1}".format(name, extension) 
+        recipe = "{0}/{0}.{1}".format(name, extension)
         if os.path.isfile(recipe):
             oz_args = (" -a %s " % recipe) + oz_args
             break
@@ -266,7 +266,7 @@ if __name__ == "__main__":
         metavar="image_file")
     parser.add_argument('-o', '--os', required=False, choices=OSS.keys(),
         help=help_os)
-    parser.add_argument('-f', '--image_format', required=True, 
+    parser.add_argument('-f', '--image_format', required=True,
         choices=IMAGE_FORMATS.keys(), help=help_image_format)
     parser.add_argument('-t', '--tenant', required=False, help=help_tenant)
     parser.add_argument('-c', '--os_credentials', required=False,
@@ -284,7 +284,7 @@ if __name__ == "__main__":
         if args.name or args.local:
             errorAndExit("There is no point passing --name, --repo or --local "
                          "when you only want to upload existing image")
-        
+
     if args.upload_generated_image or args.upload_existing_image:
         # arguments check for the case of uploading images
         if not args.os:
@@ -302,12 +302,16 @@ if __name__ == "__main__":
         # set OS_TENANT_NAME environment variable
         logger.debug("Setting OS_TENANT_NAME env var to %s" % args.tenant)
         os.environ['OS_TENANT_NAME'] = args.tenant
+        if 'OS_CA_CERT' not in os.environ:
+            logger.debug("Setting OS_CA_CERT to same value as OS_CACERT")
+            os.environ['OS_CA_CERT'] = os.environ['OS_CACERT']
 
         # check we can connect to Glance before starting to do the work
         try:
             GlanceProxy().get_images()
         except:
-            errorAndExit("Can't connect to Glance. Is the tenant set properly?")
+            errorAndExit("Can't connect to Glance. Are all the envvars set"
+                         "properly?")
     else:
         # arguments check for local creation only
         if args.tenant:
@@ -326,7 +330,6 @@ if __name__ == "__main__":
 
     if not args.upload_existing_image and not args.name:
         errorAndExit("You must pass a --name if you want to generate image.")
-
 
     try:
         converted_img = ""
