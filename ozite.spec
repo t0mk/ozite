@@ -38,7 +38,7 @@ ln -s %{python_sitelib}/ozite/ozite.py /usr/bin/ozite
 chmod +x %{python_sitelib}/ozite/ozite.py
 
 %preun
-rm /usr/bin/ozite
+rm -f /usr/bin/ozite
 
 
 %changelog
