@@ -1,7 +1,7 @@
 Summary: Tool for image creation and glance upload
 Name: ozite
-Version: 0.1
-Release: 2%{?dist}
+Version: 0.2
+Release: 1%{?dist}
 
 License: GPL
 Group: System Environment/Base
@@ -42,6 +42,8 @@ rm -f /usr/bin/ozite
 
 
 %changelog
+* Mon Apr 22 2013 Tomas Karasek <tomas.karasek@cern.ch> - 0.2-1
+- fixed post-install and OS_CACERT x OS_CA_CERT problem
 * Mon Mar 18 2013 Tomas Karasek <tomas.karasek@cern.ch> - 0.1-2
 - fixed deps and added raw image format for faster debugging of images
 * Fri Feb 08 2013 Tomas Karasek <tomas.karasek@cern.ch> - 0.1-1
