@@ -46,8 +46,8 @@ Examples:
 
   - Create image for slc5 from templates stored in git and upload it to glance
     with proper properties (-o parameter), with glance name "SLC5 image", to
-    tenant "tkarasek private" and then remove the generated image from local disk
-        $ sudo -E %(name)s -d -n slc5 -p -u -d -o linux -g "SLC5 image" -t "tkarasek private"
+    project "Personal daphne" and then remove the generated image from local disk
+        $ sudo -E %(name)s -d -n slc5 -p -u -d -o linux -g "SLC5 image" -t "Personal daphne"
 
   - Create image for slc5 from templates stored in git and upload it to glance
     with proper properties (-o parameter) and use credentials from file os_creds:
@@ -56,14 +56,14 @@ Examples:
      current environment. That's why you must call sudo with -E. Also, you
      need to have SETENV in sudoers.
 
-  - Upload image file /tmp/slc5.qcow2 to glance as Linxu image for tenant
-    "tkarasek private":
-        $ %(name)s -d -i /tmp/slc5.qcow2 -o linux -f qcow2 -t "tkarasek private"
+  - Upload image file /tmp/slc5.qcow2 to glance as Linux image for project
+    "Personal daphne":
+        $ %(name)s -d -i /tmp/slc5.qcow2 -o linux -f qcow2 -t "Personal daphne"
 
   - Generate vhd image based on templates windows2012/windows2012.{xml,tdl},
-    upload it to glance for tenant "tkarasek private", and delete the image
+    upload it to glance for project "Personal daphne", and delete the image
     file from local disk.
-        $ sudo -E %(name)s -d -n windows2012 -o windows -f vhd -u -p -t "tkarasek private"
+        $ sudo -E %(name)s -d -n windows2012 -o windows -f vhd -u -p -t "Personal daphne"
 """ % {'repo': DEFAULT_REPO, 'name': MYNAME}
 
 
@@ -84,8 +84,8 @@ OSS = {
 }
 
 IMAGE_FORMATS = {
-    'qcow2': "qemu-img convert -p -c -O qcow2 {0} {1}",
-    'vhd': "VBoxManage convertfromraw {0} {1} --format=VHD",
+    'qcow2':  "qemu-img convert -p -c -O qcow2 {0} {1}",
+    'vhd':    "qemu-img convert -p    -O vpc {0} {1}",
     'rawimg': "mv {0} {1}"
 }
 
@@ -226,7 +226,7 @@ def errorAndExit(message):
 
 if __name__ == "__main__":
 
-    help_name = ("Name of tepmlate set to use. Must be present in a directory "
+    help_name = ("Name of template set to use. Must be present in a directory "
                  "either in a cwd or in given git repo.")
     help_local = ("Use template dir in cwd, dont clone a git repo.")
     help_repo = ("Git repo to get the templates from. Default is %s" %
