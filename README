@@ -1,5 +1,4 @@
 Ozite
 -----
-Is a tool (maybe set of tools in future) for creating images from templates
-and uploading them to Openstack.
+Is a tool for creating images from templates and uploading them to Openstack.
 Makes use of Aeolus Oz and python API to Openstack Glance.
